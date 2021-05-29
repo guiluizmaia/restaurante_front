@@ -3,7 +3,8 @@ import React from 'react';
 import Routes from './routes';
 
 import GlobalStyles from './styles/GlobalStyles'
-import Login from './components/login'
+import NavBar from './components/navbar'
+
 
 
 function App() {

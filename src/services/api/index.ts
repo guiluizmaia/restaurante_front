@@ -9,11 +9,27 @@ export class Api{
     }
 
     setHeaders(token: string){
-        this.axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+        this.axios.defaults.headers.Authorization = `Bearer ${token}`;
+        localStorage.setItem('token', JSON.stringify(token))
     }
 
     async login(email: string, password: string): Promise<AxiosResponse>{
         const response = await this.axios.get(`/user/login/${email}/${password}`);
+        return response;
+    }
+
+    async getMenuTopic(): Promise<AxiosResponse>{
+        const response = await this.axios.get(`/categorymenu/`);
+        return response;
+    }
+
+    async postMenuTopic(name: string): Promise<AxiosResponse>{
+        const response = await this.axios.post(`/categorymenu/`, {name});
+        return response;
+    }
+
+    async deleteMenuTopic(id: string): Promise<AxiosResponse>{
+        const response = await this.axios.delete(`/categorymenu/${id}`);
         return response;
     }
 }

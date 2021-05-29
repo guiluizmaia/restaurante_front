@@ -1,13 +1,19 @@
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 
 import history from '../services/history/';
 
-import Login from '../components/login';
+import Login from '../pages/login';
+import NavBar from '../components/navbar';
+
+
 
 const Routes = () => {
     return (
         <Router history={history}>
-            <Route path="/" component={Login} />
+            <Switch>
+                <Route path="/login" component={Login} /> 
+                <Route path="/navbar" component={NavBar} />
+            </Switch>
         </Router>
     )
 }
