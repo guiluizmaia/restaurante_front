@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Topico } from './styles';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import CreateIcon from '@material-ui/icons/Create';
 import Api from '../../services/api/index';
 import history from '../../services/history';
 import Fundo from '../Fundo';
 import ModalConfirm from '../ModalConfirm';
+import ModalEdit from '../ModalEdit';
+
 
 
 
@@ -30,6 +33,8 @@ const Topicos: React.FC = () => {
     const [dados, setDados] = useState<ITopicos[]>([]);
     const [name, setName] = useState<string>('');
     const [modal, setModal] = useState<boolean>(false);
+    const [modalEdit, setModalEdit] = useState<boolean>(false);
+
     const [selected, setSelected] = useState<ISelected>({ id: '', index: -1});
 
     useEffect(() => {
@@ -48,8 +53,10 @@ const Topicos: React.FC = () => {
         )
     }, []);
 
+
     const handleChangeName = (e: React.FormEvent<HTMLInputElement>) =>
         setName(e.currentTarget.value)
+        console.log(name)
 
 
     const handleChangeSelected = ({id, index}: ISelected) =>{
@@ -59,6 +66,14 @@ const Topicos: React.FC = () => {
     const handleChangeModal = () =>
         setModal(!modal)
     
+    const handleChangeModalEdit = () =>
+        setModalEdit(!modalEdit)
+    
+
+    const buttonEdit = ({id, index}: ISelected) =>{
+        handleChangeSelected({id, index});
+        handleChangeModalEdit();
+    }
 
     const buttonTrash = ({id, index}: ISelected) =>{
         handleChangeSelected({id, index});
@@ -72,6 +87,14 @@ const Topicos: React.FC = () => {
         setDados([...dados, response.data]); 
         setName('')
         }
+    }
+
+    const handleEdit = async () =>{
+        await Api.patchMenuTopic(selected.id, name);
+        dados[selected.index].name = name;
+        setDados(dados);
+        setModalEdit(false);
+        setName('')
     }
 
     const handleDelete = async ({id, index}: ISelected) =>{
@@ -101,7 +124,10 @@ const Topicos: React.FC = () => {
                     return(
                     <div className="topic">
                         <h1>{e.name}</h1>
-                        <DeleteOutlineIcon className="icon" onClick={() => buttonTrash({id: e.id, index})} style={{ fontSize: 50, marginRight: 40, cursor: 'pointer'}}/> 
+                        <div>
+                            <CreateIcon className="iconI" onClick={() => buttonEdit({id: e.id, index})} style={{ fontSize: 45, marginRight: 20, marginBottom: 3, cursor: 'pointer'}}/> 
+                            <DeleteOutlineIcon className="iconI" onClick={() => buttonTrash({id: e.id, index})} style={{ fontSize: 50, marginRight: 40, cursor: 'pointer'}}/> 
+                        </div>
                     </div>) 
                 }
                 )}   
@@ -112,6 +138,12 @@ const Topicos: React.FC = () => {
             <Fundo>
                 <ModalConfirm text='Tem certeza que seja excluir esse tópico (caso exclua todos os itens do cardápio relacionados a ele serão excluidos também)' 
                 handleChangeModal={handleChangeModal} buttonConfirm={buttonConfirm}/>
+            </Fundo>
+        }
+
+        { modalEdit &&
+            <Fundo>
+                <ModalEdit handleChangeModal={handleChangeModalEdit} handleChangeName={handleChangeName} handleEdit={handleEdit}/>
             </Fundo>
         }
         </>

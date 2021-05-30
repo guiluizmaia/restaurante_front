@@ -68,10 +68,16 @@ export const Topico = styled.div`
       background-color: black;
       width: 81.4vw;
       height: 65vh;
-      padding-top: 18px;
-      padding-left: 8px;
+      padding-top: 15px;
       overflow-y: auto;
       border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .iconI:hover{
+      color: #2C2C2C;
     }
 
 `;

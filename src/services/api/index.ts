@@ -28,8 +28,18 @@ export class Api{
         return response;
     }
 
+    async patchMenuTopic(id: string, name: string): Promise<AxiosResponse>{
+        const response = await this.axios.patch(`/categorymenu/`, {id, name});
+        return response;
+    }
+
     async deleteMenuTopic(id: string): Promise<AxiosResponse>{
         const response = await this.axios.delete(`/categorymenu/${id}`);
+        return response;
+    }
+
+    async getMenu(): Promise<AxiosResponse>{
+        const response = await this.axios.get(`/menu/`);
         return response;
     }
 }

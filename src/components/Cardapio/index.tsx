@@ -10,8 +10,33 @@ import history from '../../services/history';
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet"/> </link>
 
+interface ITopicos{
+    created_at: string;
+    id: string; 
+    idUser: string; 
+    name: string; 
+    updated_at: string; 
+}
+
+interface IMenu{
+    id: string;
+    categoryId: string;
+    categoryName: string;
+    idUser: string;
+    name: string;
+    description: string;
+    price: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface IRequest{
+    category: ITopicos[];
+    menu?: IMenu[] | [];
+}
+
 const Cardapio: React.FC = () => {
-    const [dados, setDados] = useState<any>();
+    const [dados, setDados] = useState<IRequest>();
     
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -22,12 +47,14 @@ const Cardapio: React.FC = () => {
         }
     }, []);
 
-    /*const response = useEffect(() => {
-        return async() =>{
-            await Api.getMenuTopic() 
-    }
-    }, [])*/
+    useEffect(() => {
+        Api.getMenu().then((response) =>{
+            setDados(response.data);
+        }
+        )
+    }, []);
 
+    console.log(dados);
 
     return (
         <Topico>
