@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 
 
 import Api from '../../services/api/index';
-import NavBar from '../../components/navbar/';
+import NavBar from '../navbar';
 
 import history from '../../services/history';
 

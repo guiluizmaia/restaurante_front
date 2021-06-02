@@ -52,14 +52,57 @@ export const Topico = styled.div`
     .topic{
         background-color: #fff;
         width: 80vw;
-        height: 7vh;
+        height: auto;
+        border-radius: 12px 12px 0 0;
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .topic h1{
+      width: 75vw;
+      text-align: center;
+      font-size: 48px
+    }
+
+    .topicMenu{
+        background-color: #d3d3d3;
+        width: 73vw;
+        height: auto;
         border-radius: 12px;
+        margin-top: 5px;
         display:flex;
         align-items: center;
         justify-content: space-between;
     }
     h1{
         margin-left: 40px;
+    }
+
+    .container{
+      background-color: black;
+      width: 81.4vw;
+      height: 65vh;
+      padding-top: 15px;
+      overflow-y: auto;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .found{
+      background-color: white;
+      width: 80vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5px;
+      border-radius: 0 0 12px 12px;
+    }
+    .iconI:hover{
+      color: #2C2C2C;
     }
 
     

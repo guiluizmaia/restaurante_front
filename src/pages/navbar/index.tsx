@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 import { Bar, Page } from './styles';
-import Topicos from '../Topicos';
-import Cardapio from '../Cardapio';
-import Pedidos from '../Pedidos';
-import PedidoToday from '../PedidoToday';
+import Topicos from '../../components/Topicos';
+import Cardapio from '../../components/Cardapio';
+import Pedidos from '../../components/Pedidos';
+import PedidoToday from '../../components/PedidoToday';
 
 
 
