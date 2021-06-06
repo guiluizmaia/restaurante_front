@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Fundo from '../Fundo';
 import ModalNewItem from '../ModalNewItem';
+import api from '../../services/api/index';
 
 
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -42,15 +43,20 @@ interface IMenu{
 
 interface IRequest{
     category: ITopicos[];
-    menu: IMenu[] | [];
+    menu: IMenu[];
 }
 
 const Cardapio: React.FC = () => {
     const [dados, setDados] = useState<IRequest>({category: [], menu: []});
     const [open, setOpen] = useState<String[]>([]);
+    const [modalNew, setModalNew] = useState<boolean>(false);
 
-    const [name, setName] = useState<String>('');
-    const [descript, setDescript] = useState<String>('');
+    const [idSelected, setIdSelected] = useState<string>('');
+    console.log(idSelected)
+    const [name, setName] = useState<string>('');
+    const [descript, setDescript] = useState<string>('');
+    const [price, setPrice] = useState<string>('');
+
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -68,11 +74,28 @@ const Cardapio: React.FC = () => {
         )
     }, []);
 
+
     const handleChangeName = (e: React.FormEvent<HTMLInputElement>) =>
         setName(e.currentTarget.value)
     
     const handleChangeDescript = (e: React.FormEvent<HTMLTextAreaElement>) =>
         setDescript(e.currentTarget.value)
+    
+ 
+    const handleChangePrice = (e: React.FormEvent<HTMLInputElement>) =>
+        setPrice(e.currentTarget.value)
+    
+    const handleChangeIdSelected = (id: string) =>
+        setIdSelected(id);
+
+    const submitNew = () =>{
+        Api.postMenu(idSelected, name, descript, price).then((response) =>{
+            dados.menu.push(response.data);
+            setDados(dados);
+            handleChangeModalNew();
+        })
+    }
+    
 
     const handleChangeOpen = async (id: string) =>{
         if(!open.find((e) => e === id)){
@@ -91,10 +114,14 @@ const Cardapio: React.FC = () => {
         }         
     }
 
+    const handleChangeModalNew = () => {
+        setModalNew(!modalNew);
+    }
+
 
     return (
         <Topico>
-                <AddIcon className="iconPlus" style={{ fontSize: 80, marginRight: 40, cursor: 'pointer', color: '#d3d3d3'}}/> 
+                <AddIcon className="iconPlus" onClick={handleChangeModalNew} style={{ fontSize: 80, marginRight: 40, cursor: 'pointer', color: '#d3d3d3'}}/> 
 
                 <div className="container">
                     {dados.category.map((e) =>{
@@ -125,6 +152,8 @@ const Cardapio: React.FC = () => {
                                                   <div className="caixaMenu">
                                                     <h1>- {i.name}</h1>
                                                     <h2>{i.description}</h2>
+                                                    <h2>R$ {i.price}</h2>
+
                                                   </div>
                                                   <div>
                                                       <CreateIcon className="iconI" style={{ fontSize: 45, marginRight: 20, marginBottom: 3, cursor: 'pointer'}}/> 
@@ -141,10 +170,12 @@ const Cardapio: React.FC = () => {
                          )
                      }
                     )}   
-                </div> 
-                <Fundo>
-                    <ModalNewItem handleChangeName={handleChangeName} handleChangeDescript={handleChangeDescript}/>
-                </Fundo>
+                </div>
+                {modalNew && 
+                    <Fundo>
+                        <ModalNewItem handleChangeModal={handleChangeModalNew} data={dados.category} handleChangeName={handleChangeName} handleChangePrice={handleChangePrice} handleChangeDescription={handleChangeDescript} handleChangeIdSelected={handleChangeIdSelected} submitNew={submitNew}/>
+                    </Fundo>
+                }
         </Topico>
     )
 };

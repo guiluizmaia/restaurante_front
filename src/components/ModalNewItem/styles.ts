@@ -54,6 +54,49 @@ export const Modal = styled.div`
         color: black;
         border-radius: 30px;
     }
+
+    .dropdown{
+      background-color: #fff;
+      margin-top: 25px;
+      width: 30vw;
+      height: 45px;
+      font-size: 35px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: center;
+      cursor: pointer;
+    }
+
+    .dropdownSelect{
+      background-color: #fff;
+      margin-top: 25px;
+      width: 30vw;
+      height: auto;
+      max-height: 40vh;
+      font-size: 35px;
+      border-radius: 20px ;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .title{
+      display: flex;
+      flex-direction: center;
+      justify-content: space-between;
+    }
+
+    .itens{
+      border-radius: 12px;
+      border-bottom: 2px solid;
+      border-top: 2px solid;
+      margin-bottom: 5px;
+      display: flex;
+      cursor: pointer;
+    }
+
 `;
 
 export default Modal;

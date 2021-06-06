@@ -108,6 +108,7 @@ export const Topico = styled.div`
     h2{
         font-size: 25px;
         margin-left: 70px;
+        margin-top: 8px;
     }
 
     .container{

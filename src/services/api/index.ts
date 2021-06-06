@@ -1,5 +1,17 @@
 import axios, { AxiosAdapter, AxiosInstance, AxiosResponse } from 'axios';
 
+interface IMenu{
+    id: string;
+    categoryId: string;
+    categoryName: string;
+    idUser: string;
+    name: string;
+    description: string;
+    price: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export class Api{
     private baseURL: string;
     private axios: AxiosInstance;
@@ -40,6 +52,11 @@ export class Api{
 
     async getMenu(): Promise<AxiosResponse>{
         const response = await this.axios.get(`/menu/`);
+        return response;
+    }
+
+    async postMenu(categoryId: string , name: string , description: string , price: string): Promise<AxiosResponse<IMenu>>{
+        const response = await this.axios.post(`/menu/`, {categoryId, name, description, price});
         return response;
     }
 }
