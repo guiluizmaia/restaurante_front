@@ -25,6 +25,16 @@ export const Modal = styled.div`
       text-align: center;
     }    
 
+    textarea{
+      margin-top: 25px;
+      width: 30vw;
+      height: 28vh;
+      font-size: 35px;
+      padding-left: 30px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
     h1{
         color: white;
         text-align: center;

@@ -31,7 +31,7 @@ const Login: React.FC = () => {
         try{
             const response = await Api.login(email, pass) 
             if(response.status === 201){
-                localStorage.setItem('token', JSON.stringify(response.data.token))
+                sessionStorage.setItem('token', JSON.stringify(response.data.token))
                 Api.setHeaders(response.data.token);
                 history.push('/navbar')
                 setAuth(true);

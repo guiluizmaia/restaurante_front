@@ -10,7 +10,7 @@ export class Api{
 
     setHeaders(token: string){
         this.axios.defaults.headers.Authorization = `Bearer ${token}`;
-        localStorage.setItem('token', JSON.stringify(token))
+        sessionStorage.setItem('token', JSON.stringify(token))
     }
 
     async login(email: string, password: string): Promise<AxiosResponse>{

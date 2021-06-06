@@ -12,6 +12,7 @@ export const Topico = styled.div`
     .add{
       display: flex;
       justify-content: space-between;
+      
       padding-right: 40px;
       padding-left: 40px;
       height: 100px;

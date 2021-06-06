@@ -14,7 +14,7 @@ const Pedidos: React.FC = () => {
     const [dados, setDados] = useState<any>();
     
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if(!token){
             history.push('/login')
         }else{
