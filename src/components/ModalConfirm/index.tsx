@@ -7,8 +7,8 @@ import CloseIcon from '@material-ui/icons/Close';
 
 interface IRequest{
     text: string;
-    handleChangeModal: () => void;
-    buttonConfirm: () => void;
+    handleChangeModal?: () => void;
+    buttonConfirm?: () => void;
 }
 
 function ModalConfirm({ text, handleChangeModal, buttonConfirm }: IRequest) {

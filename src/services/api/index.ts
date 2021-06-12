@@ -12,6 +12,7 @@ interface IMenu{
     updated_at: string;
 }
 
+
 export class Api{
     private baseURL: string;
     private axios: AxiosInstance;
@@ -58,6 +59,15 @@ export class Api{
     async postMenu(categoryId: string , name: string , description: string , price: string): Promise<AxiosResponse<IMenu>>{
         const response = await this.axios.post(`/menu/`, {categoryId, name, description, price});
         return response;
+    }
+
+    async editMenu(id: string, categoryId: string , name: string , description: string , price: string): Promise<AxiosResponse<IMenu>>{
+        const response = await this.axios.patch(`/menu/`, {id, categoryId, name, description, price});
+        return response;
+    }
+
+    async deleteMenu(id: string): Promise<void>{
+        await this.axios.delete(`/menu/${id}`);
     }
 }
 

@@ -15,7 +15,10 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Fundo from '../Fundo';
 import ModalNewItem from '../ModalNewItem';
-import api from '../../services/api/index';
+import ModalConfirm from '../ModalConfirm';
+import ModalEditItem from '../ModalEditItem ';
+
+
 
 
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -50,9 +53,13 @@ const Cardapio: React.FC = () => {
     const [dados, setDados] = useState<IRequest>({category: [], menu: []});
     const [open, setOpen] = useState<String[]>([]);
     const [modalNew, setModalNew] = useState<boolean>(false);
+    const [modalExc, setModalExc] = useState<boolean>(false);
+    const [modalEdit, setModalEdit] = useState<boolean>(false);
+
+
 
     const [idSelected, setIdSelected] = useState<string>('');
-    console.log(idSelected)
+    const [id, setId] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [descript, setDescript] = useState<string>('');
     const [price, setPrice] = useState<string>('');
@@ -88,12 +95,33 @@ const Cardapio: React.FC = () => {
     const handleChangeIdSelected = (id: string) =>
         setIdSelected(id);
 
-    const submitNew = () =>{
-        Api.postMenu(idSelected, name, descript, price).then((response) =>{
+    const submitNew = async() =>{
+        await Api.postMenu(idSelected, name, descript, price).then((response) =>{
             dados.menu.push(response.data);
             setDados(dados);
             handleChangeModalNew();
         })
+    }
+
+    const editNew = async() =>{
+        await Api.editMenu(id, idSelected, name, descript, price).then((response) =>{
+            const index = dados.menu.findIndex(e => e.id === id);
+            dados.menu[index] = response.data;
+            setDados(dados);
+            handleChangeModalEdit();
+        })
+    }
+
+    const handleDelete = async (id: string) =>{
+        await Api.deleteMenu(id);
+        const index = dados.menu.findIndex(e => e.id === id);
+        const item = dados.menu.find(e => e.id === id);
+        if(item){
+            handleChangeClose(item.categoryId);
+        }
+        dados.menu.splice(index, 1);
+        console.log(dados)
+        setDados(dados);
     }
     
 
@@ -116,6 +144,32 @@ const Cardapio: React.FC = () => {
 
     const handleChangeModalNew = () => {
         setModalNew(!modalNew);
+    }
+
+    const handleChangeModalExc = () => {
+        setModalExc(!modalExc);
+    }
+
+    const handleChangeModalEdit = () => {
+        setModalEdit(!modalEdit);
+    }
+
+    const buttonDelete = (id: string) =>{
+        setIdSelected(id);
+        handleChangeModalExc();
+    }
+
+    const buttonEdit = (id: string, name:string, description: string, price: string) =>{
+        setId(id);
+        setName(name);
+        setDescript(description);
+        setPrice(price);
+        handleChangeModalEdit();
+    }
+
+    const buttonConfirmDelete = () =>{
+        handleDelete(idSelected);
+        handleChangeModalExc();
     }
 
 
@@ -145,7 +199,7 @@ const Cardapio: React.FC = () => {
                                       </div>
                                   </div>
                                   <div className="found">
-                                      {dados.menu.map((i: IMenu) =>{
+                                      {dados.menu.map((i: IMenu, index) =>{
                                           if(i.categoryId === e.id){
                                           return(
                                               <div className="topicMenu">
@@ -156,8 +210,8 @@ const Cardapio: React.FC = () => {
 
                                                   </div>
                                                   <div>
-                                                      <CreateIcon className="iconI" style={{ fontSize: 45, marginRight: 20, marginBottom: 3, cursor: 'pointer'}}/> 
-                                                      <DeleteOutlineIcon className="iconI" style={{ fontSize: 50, marginRight: 40, cursor: 'pointer'}}/> 
+                                                      <CreateIcon className="iconI" onClick={() => buttonEdit(i.id, i.name, i.description, i.price)} style={{ fontSize: 45, marginRight: 20, marginBottom: 3, cursor: 'pointer'}}/> 
+                                                      <DeleteOutlineIcon className="iconI" onClick={() => buttonDelete(i.id)} style={{ fontSize: 50, marginRight: 40, cursor: 'pointer'}}/> 
                                                   </div>
                                               </div>
                                               )}
@@ -174,6 +228,18 @@ const Cardapio: React.FC = () => {
                 {modalNew && 
                     <Fundo>
                         <ModalNewItem handleChangeModal={handleChangeModalNew} data={dados.category} handleChangeName={handleChangeName} handleChangePrice={handleChangePrice} handleChangeDescription={handleChangeDescript} handleChangeIdSelected={handleChangeIdSelected} submitNew={submitNew}/>
+                    </Fundo>
+                }
+
+                {modalEdit && 
+                    <Fundo>
+                        <ModalEditItem handleChangeModal={handleChangeModalEdit} data={dados.category} handleChangeName={handleChangeName} handleChangePrice={handleChangePrice} handleChangeDescription={handleChangeDescript} handleChangeIdSelected={handleChangeIdSelected} edit={editNew} name={name} description={descript} price={price}/>
+                    </Fundo>
+                }
+
+                {modalExc &&
+                    <Fundo>
+                        <ModalConfirm text="Tem certeza de que deseja excluir esse item do menu?" handleChangeModal={handleChangeModalExc} buttonConfirm={buttonConfirmDelete}/>
                     </Fundo>
                 }
         </Topico>
